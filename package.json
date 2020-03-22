@@ -4,8 +4,8 @@
   "description": "An app to track the COVID-19 spread in the World",
   "main": "server.js",
   "scripts": {
-    "start": "node server/server.js",
-    "dev": "nodemon server/server.js"
+    "start": "node ./server/server.js",
+    "dev": "nodemon ./server/server.js"
   },
   "keywords": [
     "COVID-19",
