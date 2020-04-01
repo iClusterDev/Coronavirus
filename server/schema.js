@@ -1,5 +1,6 @@
-const { GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLSchema, GraphQLList, GraphQLNonNull } = require("graphql");
+const { GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLSchema, GraphQLList, GraphQLFloat } = require("graphql");
 const axios = require("axios");
+const History = require("./data");
 
 const CountryType = new GraphQLObjectType({
   name: "Country",
@@ -16,9 +17,45 @@ const CountryType = new GraphQLObjectType({
   })
 });
 
+const HistoryType = new GraphQLObjectType({
+  name: "History",
+  fields: () => ({
+    country: { type: GraphQLString },
+    timeline: { type: TimelineType }
+  })
+});
+
+const TimelineType = new GraphQLObjectType({
+  name: "Timeline",
+  fields: () => ({
+    cases: { type: new GraphQLList(DataType) },
+    deaths: { type: new GraphQLList(DataType) },
+    recovered: { type: new GraphQLList(DataType) }
+  })
+});
+
+const DataType = new GraphQLObjectType({
+  name: "Data",
+  fields: () => ({
+    date: { type: GraphQLString },
+    total: { type: GraphQLInt },
+    today: { type: GraphQLInt },
+    growth: { type: GraphQLFloat }
+  })
+});
+
 const RootQuery = new GraphQLObjectType({
   name: "RootQueryType",
   fields: {
+    history: {
+      type: HistoryType,
+      args: { name: { type: GraphQLString } },
+      resolve(parentValue, args) {
+        return axios.get(`https://corona.lmao.ninja/v2/historical/${args.name}`).then(res => {
+          return new History(res.data);
+        });
+      }
+    },
     countries: {
       type: new GraphQLList(CountryType),
       resolve(parentValue, args) {
