@@ -1,6 +1,6 @@
 const { GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLSchema, GraphQLList, GraphQLFloat } = require("graphql");
 const axios = require("axios");
-const History = require("./data");
+const Data = require("./data");
 
 const CountryType = new GraphQLObjectType({
   name: "Country",
@@ -52,7 +52,7 @@ const RootQuery = new GraphQLObjectType({
       args: { name: { type: GraphQLString } },
       resolve(parentValue, args) {
         return axios.get(`https://corona.lmao.ninja/v2/historical/${args.name}`).then(res => {
-          return new History(res.data);
+          return new Data(res.data);
         });
       }
     },
