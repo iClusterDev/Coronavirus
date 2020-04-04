@@ -48,11 +48,16 @@ const RootQuery = new GraphQLObjectType({
   name: "RootQueryType",
   fields: {
     history: {
-      type: HistoryType,
-      args: { name: { type: GraphQLString } },
+      type: new GraphQLList(HistoryType),
+      args: { countries: { type: new GraphQLList(GraphQLString) } },
       resolve(parentValue, args) {
-        return axios.get(`https://corona.lmao.ninja/v2/historical/${args.name}`).then(res => {
-          return new Data(res.data);
+        return axios.get(`https://corona.lmao.ninja/v2/historical/${args.countries}`).then(res => {
+          if (Array.isArray(res.data)) {
+            return res.data.map(item => {
+              return new Data(item);
+            });
+          }
+          return [new Data(res.data)];
         });
       }
     },
