@@ -1,3 +1,11 @@
+// this is on the total values
+// const present = value;
+// const past = source[index - 1][1];
+// const net = present - past;
+// const rate = past === 0 ? 0 : net / past;
+// growth = rate * 100;
+// today = net;
+
 const expand = sourceObj => {
   const outputArray = [];
   Object.entries(sourceObj).forEach(([key, value], index, source) => {
@@ -11,14 +19,6 @@ const expand = sourceObj => {
       const rate = past === 0 ? 0 : net / past;
       growth = rate * 100;
       today = present;
-
-      // this is on the total values
-      // const present = value;
-      // const past = source[index - 1][1];
-      // const net = present - past;
-      // const rate = past === 0 ? 0 : net / past;
-      // growth = rate * 100;
-      // today = net;
     }
     outputArray.push({ date: key, total: value, today, growth });
   });
