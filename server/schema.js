@@ -32,21 +32,45 @@ const TimelineItemType = new GraphQLObjectType({
   }),
 });
 
+const requestData = (country) => {
+  const promises = [
+    `https://corona.lmao.ninja/countries/${country}`,
+    `https://corona.lmao.ninja/yesterday/${country}`,
+    `https://corona.lmao.ninja/v2/historical/${country}?lastdays=all`,
+  ].map((url) => axios.get(url, { timeout: 500 }).then((res) => res.data));
+  return Promise.all(promises).then(([res1, res2, history]) => {
+    return getData(res1, res2, history);
+  });
+};
+
+const requestoptions = () => {
+  const URL = `https://corona.lmao.ninja/countries`;
+  return axios.get(URL, { timeout: 500 }).then((res) => {
+    return res.data.map((item) => item.country);
+  });
+};
+
 const RootQuery = new GraphQLObjectType({
   name: "RootQueryType",
   fields: {
+    options: {
+      type: new GraphQLList(GraphQLString),
+      resolve() {
+        return requestoptions();
+      },
+    },
+    countries: {
+      type: new GraphQLList(CountryType),
+      args: { names: { type: new GraphQLList(GraphQLString) } },
+      resolve(parentValue, args) {
+        return args.names.map((name) => requestData(name));
+      },
+    },
     country: {
       type: CountryType,
       args: { name: { type: GraphQLString } },
       resolve(parentValue, args) {
-        const promises = [
-          `https://corona.lmao.ninja/countries/${args.name}`,
-          `https://corona.lmao.ninja/yesterday/${args.name}`,
-          `https://corona.lmao.ninja/v2/historical/${args.name}?lastdays=all`,
-        ].map((url) => axios.get(url, { timeout: 500 }).then((res) => res.data));
-        return Promise.all(promises).then(([res1, res2, history]) => {
-          return getData(res1, res2, history);
-        });
+        return requestData(args.name);
       },
     },
   },
