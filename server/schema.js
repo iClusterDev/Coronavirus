@@ -32,6 +32,14 @@ const TimelineItemType = new GraphQLObjectType({
   }),
 });
 
+const OptionTipe = new GraphQLObjectType({
+  name: "Option",
+  fields: () => ({
+    country: { type: GraphQLString },
+    flag: { type: GraphQLString },
+  }),
+});
+
 const requestData = (country) => {
   const promises = [
     `https://corona.lmao.ninja/countries/${country}`,
@@ -46,7 +54,14 @@ const requestData = (country) => {
 const requestoptions = () => {
   const URL = `https://corona.lmao.ninja/countries`;
   return axios.get(URL, { timeout: 500 }).then((res) => {
-    return res.data.map((item) => item.country);
+    return res.data.map((item) => {
+      const { country } = item;
+      const { flag } = item.countryInfo;
+      return {
+        country,
+        flag,
+      };
+    });
   });
 };
 
@@ -54,7 +69,7 @@ const RootQuery = new GraphQLObjectType({
   name: "RootQueryType",
   fields: {
     options: {
-      type: new GraphQLList(GraphQLString),
+      type: new GraphQLList(OptionTipe),
       resolve() {
         return requestoptions();
       },
