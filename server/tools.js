@@ -18,7 +18,7 @@ const summarize = (sourceObj) => {
       const past = source[index - 1][1] - source[index - 2][1];
       const net = present - past;
       const rate = past === 0 ? 0 : net / past;
-      growth = rate * 100;
+      growth = rate < 1 ? rate * 100 : 100;
       today = present;
     }
     outputArray.push({ date: key, total: value, today, growth });
