@@ -42,8 +42,8 @@ const OptionTipe = new GraphQLObjectType({
 
 const requestData = (country) => {
   const promises = [
-    `https://corona.lmao.ninja/v2/countries/${country}?yesterday=0,`,
-    `https://corona.lmao.ninja/v2/countries/${country}?yesterday=1,`,
+    `https://corona.lmao.ninja/v2/countries/${country}?yesterday=false`,
+    `https://corona.lmao.ninja/v2/countries/${country}?yesterday=true`,
     `https://corona.lmao.ninja/v2/historical/${country}?lastdays=all`,
   ].map((url) => axios.get(url, { timeout: 500 }).then((res) => res.data));
   return Promise.all(promises).then(([res1, res2, history]) => {
