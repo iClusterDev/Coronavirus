@@ -42,9 +42,9 @@ const OptionTipe = new GraphQLObjectType({
 
 const requestData = (country) => {
   const promises = [
-    `https://corona.lmao.ninja/countries/${country}`,
-    `https://corona.lmao.ninja/yesterday/${country}`,
-    `https://corona.lmao.ninja/v2/historical/${country}?lastdays=all`,
+    `https://corona.lmao.ninja/v2/countries/${country}?yesterday=0,`,
+    `https://corona.lmao.ninja/v2/countries/${country}?yesterday=1,`,
+    `https://corona.lmao.ninja/v2/historical/${country}?lastdays=3`,
   ].map((url) => axios.get(url, { timeout: 500 }).then((res) => res.data));
   return Promise.all(promises).then(([res1, res2, history]) => {
     return getData(res1, res2, history);
@@ -52,11 +52,13 @@ const requestData = (country) => {
 };
 
 const requestoptions = () => {
-  const URL = `https://corona.lmao.ninja/countries`;
+  const URL = `https://corona.lmao.ninja/v2/countries?yesterday=false`;
   return axios.get(URL, { timeout: 500 }).then((res) => {
     return res.data.map((item) => {
-      const { country } = item;
-      const { flag } = item.countryInfo;
+      const {
+        country,
+        countryInfo: { flag },
+      } = item;
       return {
         country,
         flag,
