@@ -56,7 +56,7 @@ const getLastValidUpdate = (res1, res2) => {
   res1.isNew = true;
   res2.isNew = false;
   if (res1_cases === res2_cases) {
-    return res1_todayCases === res2_todayCases ? { ...res1 } : { ...res2 };
+    return res1_todayCases === res2_todayCases ? { ...res2 } : { ...res1 };
   } else {
     return { ...res1 };
   }

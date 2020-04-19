@@ -16,8 +16,6 @@ const QUERIES = {
     query countriesQuery {
       countries(names: ${JSON.stringify(names)}) {
         name
-        lat
-        long
         flag
         timeline {
           cases {
@@ -41,8 +39,6 @@ const QUERIES = {
     query countryQuery {
       country(name: "${name}") {
         name
-        lat
-        long
         flag
         timeline {
           cases {
@@ -61,11 +57,11 @@ const QUERIES = {
       }
     }
     `;
-  }
+  },
 };
 
-const request = query => {
-  return axios.post("/graphql", { query }).then(response => response.data);
+const request = (query) => {
+  return axios.post("/graphql", { query }).then((response) => response.data);
 };
 
 class Service {
