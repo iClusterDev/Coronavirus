@@ -15,7 +15,12 @@ const QUERIES = {
     return `
     query countriesQuery {
       countries(names: ${JSON.stringify(names)}) {
+        date
         name
+        cases
+        deaths
+        todayCases
+        todayDeaths
         flag
         timeline {
           cases {
@@ -38,7 +43,12 @@ const QUERIES = {
     return `
     query countryQuery {
       country(name: "${name}") {
+        date
         name
+        cases
+        deaths
+        todayCases
+        todayDeaths
         flag
         timeline {
           cases {

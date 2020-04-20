@@ -9,10 +9,10 @@
       ></app-autocomplete>
 
       <div v-show="!serverError">
-        <div v-for="stats of userStats" :key="stats.name">
+        <div v-for="stats of storeUserData" :key="stats.name">
           <app-statistics class="elevated list-shift-item" :statistics="stats" @notify="onNotify"></app-statistics>
         </div>
-        <div v-show="userStats.length === 0" class="no-data">
+        <div v-show="storeUserData.length === 0" class="no-data">
           <div>No Countries Selected</div>
           <div>Add Some</div>
         </div>
@@ -66,21 +66,21 @@ export default {
 
     userCountries() {
       return this.storeUserData.map(item => item.name.toLowerCase());
-    },
-
-    userStats() {
-      return this.storeUserData.map(item => {
-        let { name, flag, timeline } = item;
-        let { cases, deaths } = timeline;
-        return {
-          name: name,
-          flag: flag,
-          cases: { ...cases[cases.length - 1] },
-          deaths: { ...deaths[cases.length - 1] },
-          timeline
-        };
-      });
     }
+
+    // userStats() {
+    //   return this.storeUserData.map(item => {
+    //     // let { name, flag, cases, deaths, todayCases, todayDeaths, timeline } = item;
+    //     // let { cases, deaths } = timeline;
+    //     return {
+    //       name: name,
+    //       flag: flag,
+    //       cases: { ...cases[cases.length - 1] },
+    //       deaths: { ...deaths[cases.length - 1] },
+    //       timeline
+    //     };
+    //   });
+    // }
   },
 
   created() {

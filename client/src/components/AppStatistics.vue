@@ -24,10 +24,11 @@
             <small>Cases</small>
           </template>
           <template v-slot:value>
-            <span>{{ statistics.cases.total }}</span>
+            <span>{{ statistics.cases }}</span>
           </template>
           <template v-slot:extra>
-            <small>Today: {{ statistics.cases.today }} ({{ statistics.cases.growth | toPercentage }})</small>
+            <!-- <small>Today: {{ statistics.todayCases }} ({{ statistics.cases.growth | toPercentage }})</small> -->
+            <small>Today: {{ statistics.todayCases }}</small>
           </template>
         </app-info>
         <app-info>
@@ -35,10 +36,11 @@
             <small>Deaths</small>
           </template>
           <template v-slot:value>
-            <span>{{ statistics.deaths.total }}</span>
+            <span>{{ statistics.deaths }}</span>
           </template>
           <template v-slot:extra>
-            <small>Today: {{ statistics.deaths.today }} ({{ statistics.deaths.growth | toPercentage }})</small>
+            <!-- <small>Today: {{ statistics.todayDeaths }} ({{ statistics.deaths.growth | toPercentage }})</small> -->
+            <small>Today: {{ statistics.todayDeaths }}</small>
           </template>
         </app-info>
       </div>
@@ -50,7 +52,7 @@
           :yValues2="timelineDaily.y2"
         ></app-chart>
       </div>
-      <small class="last-update">Last Update: {{ lastUpdate }}</small>
+      <small class="last-update">Last Update: {{ statistics.date }}</small>
     </template>
   </div>
 </template>
@@ -82,10 +84,6 @@ export default {
 
     isFavourite() {
       return this.storeBookmarks.includes(this.statistics.name.toLowerCase());
-    },
-
-    lastUpdate() {
-      return this.statistics.cases.date;
     },
 
     timelineDaily() {

@@ -5,13 +5,10 @@ const getData = require("./tools");
 const CountryType = new GraphQLObjectType({
   name: "Country",
   fields: () => ({
-    date: { type: GraphQLString },
     name: { type: GraphQLString },
+    lat: { type: GraphQLFloat },
+    long: { type: GraphQLFloat },
     flag: { type: GraphQLString },
-    cases: { type: GraphQLInt },
-    deaths: { type: GraphQLInt },
-    todayCases: { type: GraphQLInt },
-    todayDeaths: { type: GraphQLInt },
     timeline: { type: TimelineType },
   }),
 });
@@ -21,6 +18,7 @@ const TimelineType = new GraphQLObjectType({
   fields: () => ({
     cases: { type: new GraphQLList(TimelineItemType) },
     deaths: { type: new GraphQLList(TimelineItemType) },
+    recovered: { type: new GraphQLList(TimelineItemType) },
   }),
 });
 
@@ -49,8 +47,6 @@ const requestData = (country) => {
     `https://corona.lmao.ninja/v2/historical/${country}?lastdays=all`,
   ].map((url) => axios.get(url, { timeout: 500 }).then((res) => res.data));
   return Promise.all(promises).then(([res1, res2, history]) => {
-    res1.isNew = true;
-    res2.isNew = false;
     return getData(res1, res2, history);
   });
 };
