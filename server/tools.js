@@ -55,9 +55,12 @@ const isLastValid = (res1, res2) => {
   let { cases: res2_cases, todayCases: res2_todayCases } = res2;
   let { deaths: res1_deaths, todayDeaths: res1_todayDeaths } = res1;
   let { deaths: res2_deaths, todayDeaths: res2_todayDeaths } = res2;
-  return res1_cases === res2_cases && res1_deaths === res2_deaths && res1_todayCases === res2_todayCases && res1_todayDeaths === res2_todayDeaths
-    ? false
-    : true;
+  // console.log(res1_cases, res2_cases);
+  // console.log(res1_todayCases, res2_todayCases);
+  // console.log(res1_deaths, res2_deaths);
+  // console.log(res1_todayDeaths, res2_todayDeaths);
+  // return res1_cases === res2_cases && res1_deaths === res2_deaths && res1_todayCases === res2_todayCases && res1_todayDeaths === res2_todayDeaths
+  return res1_cases === res2_cases && res1_deaths === res2_deaths ? false : true;
 };
 
 const getCountryInfo = (res1, res2, history) => {
