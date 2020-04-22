@@ -22,7 +22,6 @@
         <div>{{storeError.message}}</div>
         <div>Come Back Later!</div>
       </div>
-
       <app-toast :duration="1500" :flashMessage="flashMessage"></app-toast>
     </div>
   </div>
