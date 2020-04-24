@@ -8,18 +8,25 @@
         @select="onSelect"
       ></app-autocomplete>
 
-      <div v-show="!serverError">
-        <div v-for="stats of storeUserData" :key="stats.name">
-          <app-statistics class="elevated list-shift-item" :statistics="stats" @notify="onNotify"></app-statistics>
+      <template v-if="storeIsLoading && storeUserData.length === 0">
+        <div class="no-data">
+          <div>Loading Data...</div>
         </div>
-        <div v-show="storeUserData.length === 0" class="no-data">
-          <div>No Countries Selected</div>
-          <div>Add Some</div>
+      </template>
+      <template v-else>
+        <div v-show="!serverError">
+          <div v-for="stats of storeUserData" :key="stats.name">
+            <app-statistics class="elevated list-shift-item" :statistics="stats" @notify="onNotify"></app-statistics>
+          </div>
+          <div v-show="storeUserData.length === 0" class="no-data">
+            <div>No Countries Selected</div>
+            <div>Add Some</div>
+          </div>
         </div>
-      </div>
+      </template>
 
       <div v-show="serverError" class="no-data">
-        <div>{{storeError.message}}</div>
+        <div>{{ storeError.message }}</div>
         <div>Come Back Later!</div>
       </div>
       <app-toast :duration="1500" :flashMessage="flashMessage"></app-toast>
@@ -56,6 +63,7 @@ export default {
       "storeBookmarks",
       "storeUserData",
       "storeUserOptions",
+      "storeIsLoading",
       "storeError"
     ]),
 

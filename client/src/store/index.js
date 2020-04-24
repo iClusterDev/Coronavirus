@@ -16,6 +16,7 @@ export default new Vuex.Store({
     userData: [],
     userOptions: [],
     error: errorTypes.NULL(),
+    loading: false,
   },
 
   getters: {
@@ -27,6 +28,10 @@ export default new Vuex.Store({
       return state.userOptions.map((option) => {
         return { country: option.country.toLowerCase(), flag: option.flag };
       });
+    },
+
+    storeIsLoading: (state) => {
+      return state.loading;
     },
 
     storeError: (state) => {
@@ -43,6 +48,9 @@ export default new Vuex.Store({
     },
     [types.ERROR](state, payload) {
       Vue.set(state, "error", payload.error);
+    },
+    [types.LOADING](state, payload) {
+      Vue.set(state, "loading", payload.loading);
     },
   },
 
@@ -70,19 +78,22 @@ export default new Vuex.Store({
           type: "USEROPTIONS_LOAD",
           options: options || [],
         });
-        // commit({
-        //   type: "ERROR",
-        //   error: errorTypes.NULL()
-        // });
       }
     },
 
     loadData: async ({ commit, dispatch }, names) => {
-      // names = ["italy", "palestine"];
+      commit({
+        type: "LOADING",
+        loading: true,
+      });
       let {
         data: { countries },
         errors,
       } = await Service.getCountries(names);
+      commit({
+        type: "LOADING",
+        loading: false,
+      });
       if (errors) {
         let userData = countries.filter((country) => country);
         if (userData.length === 0) {
@@ -108,11 +119,18 @@ export default new Vuex.Store({
     },
 
     addData: async ({ state, commit }, name = "") => {
+      commit({
+        type: "LOADING",
+        loading: true,
+      });
       let {
         data: { country },
         errors,
       } = await Service.getCountry(name);
-      console.log(country, errors);
+      commit({
+        type: "LOADING",
+        loading: false,
+      });
       if (errors) {
         let [{ message }] = errors;
         if (message.includes("404")) {
