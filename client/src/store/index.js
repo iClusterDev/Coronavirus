@@ -58,7 +58,7 @@ export default new Vuex.Store({
     initialize: async ({ getters, dispatch }) => {
       await dispatch("loadBookmarks");
       await dispatch("loadOptions");
-      if (!getters.storeError.status) {
+      if (!getters.storeError.status && getters.storeBookmarks.length > 0) {
         await dispatch("loadData", getters.storeBookmarks);
       }
     },

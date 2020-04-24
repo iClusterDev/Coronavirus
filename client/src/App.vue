@@ -25,6 +25,14 @@
         </div>
       </template>
 
+      <!-- <div v-show="storeIsLoading" class="no-data">
+        <div>Loading Data...</div>
+      </div>
+      <div v-show="!storeIsLoading && storeUserData.length === 0" class="no-data">
+        <div>No Countries Selected</div>
+        <div>Add Some</div>
+      </div>-->
+
       <div v-show="serverError" class="no-data">
         <div>{{ storeError.message }}</div>
         <div>Come Back Later!</div>
